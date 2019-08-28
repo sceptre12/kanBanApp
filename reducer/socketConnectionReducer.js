@@ -8,7 +8,7 @@ export default(state=StateTree.socketConnection, action ) =>{
             return {
                 ...state,
                 isConnected: true,
-                hasConnectionSettled: true
+                connectedHost: action.host
             }
         }
         default:

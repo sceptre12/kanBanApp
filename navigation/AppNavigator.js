@@ -5,6 +5,7 @@ import {MAIN_VIEW} from '../constants/navigation'
 import SignIn from "../screens/auth/SignIn";
 import MainTabNavigator from './MainTabNavigator';
 
+
 const AuthStack = createStackNavigator({SignIn})
 
 export default createAppContainer(
@@ -12,6 +13,6 @@ export default createAppContainer(
     Auth: AuthStack,
     [MAIN_VIEW]: MainTabNavigator,
   }, {
-      initialRouteName: 'Auth'
+      initialRouteName: 'Auth',
   })
 );

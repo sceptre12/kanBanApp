@@ -3,6 +3,9 @@ const StateTree = Object.assign({},{
         isConnected: false,
         connectedHost: ''
     },
+    qrScanner: {
+      isScannerActive: false
+    },
     authentication: {
         username: '',
         isAuthenticated: false

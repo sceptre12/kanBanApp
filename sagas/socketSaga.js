@@ -4,12 +4,18 @@ import socketIo from 'socket.io-client'
 
 import {DEVICE_CONNECTED,CONNECTION_ESTABLISHED,CLOSING_CONNECTION} from '../constants/message_headers'
 
-import {SETUP_SOCKET_CONNECTION,UPDATE_DEVICE_INFO,SEND_MESSAGE,CLOSE_CONNECTION} from '../action/socketActions'
+import {
+    SETUP_SOCKET_CONNECTION,
+    UPDATE_DEVICE_INFO,
+    SEND_MESSAGE,
+    CLOSE_CONNECTION,
+    SOCKET_CONNECTED
+} from '../action/socketActions'
 
 const getStateProjectsAndTasks = state => ({projects: state.projects, tasks: state.tasks})
 
 const connect = (host) =>{
-    const socket = socketIo(host)
+    const socket = socketIo(`http://${host}`)
     return new Promise(resolve => {
         socket.on('connect', ()=>{
             resolve(socket)
@@ -51,8 +57,6 @@ const handleIO = function* (socket){
 }
 
 
-
-
 const flow = function* (){
     try {
         // This is inside of a while loop be cause its possible to close and open the connection
@@ -61,6 +65,7 @@ const flow = function* (){
             const socket = yield call(connect,host)
             const {tasks, projects} = yield select(getStateProjectsAndTasks)
             socket.emit(CONNECTION_ESTABLISHED,{ data: {tasks,projects}})
+            yield put({type: SOCKET_CONNECTED, host})
 
             const task = yield fork(handleIO, socket)
 

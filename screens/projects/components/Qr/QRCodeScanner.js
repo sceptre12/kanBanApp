@@ -1,17 +1,38 @@
 import React, {Component} from 'react'
 import {connect} from 'react-redux'
-import {Text,View,Button,StyleSheet,Dimensions} from 'react-native'
-import Constants from 'expo-constants';
+import {Text,View,TouchableOpacity,StyleSheet,Dimensions ,Platform} from 'react-native'
+import {SafeAreaView} from 'react-navigation'
 import * as Permissions from 'expo-permissions';
 
+import { Ionicons } from '@expo/vector-icons';
 import {BarCodeScanner} from "expo-barcode-scanner";
-import {SETUP_SOCKET_CONNECTION} from "../../../action/socketActions";
+import {EXIT_QR_SCANNER} from '../../../../action/qrScannerAction'
+import {SETUP_SOCKET_CONNECTION} from "../../../../action/socketActions";
 
 const {height,width} = Dimensions.get('window')
+
 styles = StyleSheet.create({
     camera:{
+        width: '60%',
+        height: '60%',
+    },
+    buttonContainer: {
+        position: 'absolute',
+        right: 10,
+        top: 0,
+        zIndex: 1
+    },
+    button: {
+        justifyContent: 'center',
+        alignItems: 'center',
+
+    },
+    container: {
         width: width,
-        height: height
+        height: height,
+        backgroundColor: 'red',
+        justifyContent: 'center',
+        alignItems: 'center'
     }
 })
 
@@ -34,7 +55,11 @@ class QRCodeScanner extends Component {
     };
 
     handleQrScanned = ({type,data}) =>{
+        this.setState({
+            scanned: true
+        })
         this.props.setupSocket(data)
+        this.props.exitQrScanner()
     }
 
     render(){
@@ -48,27 +73,29 @@ class QRCodeScanner extends Component {
         }
 
         return (
-            <View
-                style={{
-                    flex: 1,
-                    flexDirection: 'column',
-                    justifyContent: 'flex-end',
-                }}>
+            <View style={styles.container}>
+                <SafeAreaView style={styles.buttonContainer}>
+                    <TouchableOpacity style={styles.button} onPress={this.props.exitQrScanner}>
+                        <Ionicons
+                            name={Platform.OS === 'ios' ? 'ios-close-circle' : 'md-close-circle'}
+                            size={35}
+                            color={"white"}
+                        />
+                    </TouchableOpacity>
+                </SafeAreaView>
+
                 <BarCodeScanner
                     onBarCodeScanned={scanned ? undefined : this.handleQrScanned}
                     style={styles.camera}
                 />
-
-                {scanned && (
-                    <Button title={'Tap to Scan Again'} onPress={() => this.setState({ scanned: false })} />
-                )}
             </View>
         );
     }
 }
 
 const mapDispatchToProps = dispatch => ({
-    setupSocket: port => dispatch({type: SETUP_SOCKET_CONNECTION, port})
+    setupSocket: host => dispatch({type: SETUP_SOCKET_CONNECTION, host}),
+    exitQrScanner: () => dispatch({type: EXIT_QR_SCANNER})
 })
 
 export default connect(null,mapDispatchToProps)(QRCodeScanner)

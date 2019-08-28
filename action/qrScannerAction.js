@@ -1,0 +1,2 @@
+export const LAUNCH_QR_SCANNER = "LAUNCH_QR_SCANNER"
+export const EXIT_QR_SCANNER = "EXIT_QR_SCANNER"

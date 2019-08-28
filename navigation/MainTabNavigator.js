@@ -1,78 +1,87 @@
 import React from 'react';
-import { Platform } from 'react-native';
-import { createStackNavigator, createBottomTabNavigator } from 'react-navigation';
-
+import {Platform} from 'react-native';
+import {createBottomTabNavigator, createStackNavigator} from 'react-navigation';
+import Projects from '../screens/projects'
+import ProjectView from "../screens/projects/components/ProjectView";
+import CreateProject from "../screens/projects/components/CreateProject";
+import Tasks from '../screens/tasks'
+import CreateTasks from "../screens/tasks/components/CreateTasks";
 import TabBarIcon from '../components/TabBarIcon';
-import HomeScreen from '../screens/HomeScreen';
-import LinksScreen from '../screens/LinksScreen';
 import SettingsScreen from '../screens/SettingsScreen';
+import {CREATE_PROJECT_VIEW, PROJECTS_VIEW, PROJECT_VIEW,CREATE_TASK_VIEW} from "../constants/navigation";
 
-const config = Platform.select({
-  web: { headerMode: 'screen' },
-  default: {},
-});
 
-const HomeStack = createStackNavigator(
-  {
-    Home: HomeScreen,
-  },
-  config
+const Project = createStackNavigator(
+    {
+        [PROJECTS_VIEW]: Projects,
+        [PROJECT_VIEW]: ProjectView,
+        [CREATE_PROJECT_VIEW]: CreateProject,
+        [CREATE_TASK_VIEW] : CreateTasks
+    },
+    {
+        defaultNavigationOptions: ({navigation}) => {
+            const {routeName} = navigation.state
+            return {
+                headerTitle: `${routeName}`
+            }
+        }
+    }
 );
 
-HomeStack.navigationOptions = {
-  tabBarLabel: 'Home',
-  tabBarIcon: ({ focused }) => (
-    <TabBarIcon
-      focused={focused}
-      name={
-        Platform.OS === 'ios'
-          ? `ios-project}`
-          : 'md-project'
-      }
-    />
-  ),
+Project.navigationOptions = ({navigation}) =>{
+    return {
+        tabBarLabel: 'Projects',
+        tabBarIcon: ({focused}) => (
+            <TabBarIcon
+                focused={focused}
+                name={Platform.OS === 'ios' ? 'ios-apps' : 'md-apps'}
+            />
+        ),
+        tabBarVisible: !(navigation.state.index > 0)
+    }
 };
 
-HomeStack.path = '';
 
-const LinksStack = createStackNavigator(
-  {
-    Links: LinksScreen,
-  },
-  config
+const Task = createStackNavigator(
+    {
+        Tasks,
+    }, {
+        defaultNavigationOptions: ({navigation}) => {
+            const {routeName} = navigation.state
+            return {
+                headerTitle: `${routeName}`
+            }
+        }
+    }
 );
 
-LinksStack.navigationOptions = {
-  tabBarLabel: 'Links',
-  tabBarIcon: ({ focused }) => (
-    <TabBarIcon focused={focused} name={Platform.OS === 'ios' ? 'ios-link' : 'md-link'} />
-  ),
+Task.navigationOptions = {
+    tabBarLabel: 'Tasks',
+    tabBarIcon: ({focused}) => (
+        <TabBarIcon focused={focused} name={Platform.OS === 'ios' ? 'ios-paper' : 'md-paper'}/>
+    ),
 };
 
-LinksStack.path = '';
 
 const SettingsStack = createStackNavigator(
-  {
-    Settings: SettingsScreen,
-  },
-  config
+    {
+        Settings: SettingsScreen,
+    }
 );
 
 SettingsStack.navigationOptions = {
-  tabBarLabel: 'Settings',
-  tabBarIcon: ({ focused }) => (
-    <TabBarIcon focused={focused} name={Platform.OS === 'ios' ? 'ios-options' : 'md-options'} />
-  ),
+    tabBarLabel: 'Settings',
+    tabBarIcon: ({focused}) => (
+        <TabBarIcon focused={focused} name={Platform.OS === 'ios' ? 'ios-options' : 'md-options'}/>
+    ),
 };
 
-SettingsStack.path = '';
 
 const tabNavigator = createBottomTabNavigator({
-  HomeStack,
-  LinksStack,
-  SettingsStack,
-});
+    Project,
+    Task,
+    SettingsStack,
+},);
 
-tabNavigator.path = '';
 
 export default tabNavigator;
