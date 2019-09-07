@@ -2,6 +2,7 @@ import React, {Component} from 'react'
 import {FlatList} from "react-native-gesture-handler";
 
 class ListComponent extends Component{
+    // Only stores Id's of items
     state = {
         selectedList: [], // Multiselection
         selected: null, // single selection

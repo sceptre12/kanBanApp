@@ -18,6 +18,7 @@ const connect = (host) =>{
     const socket = socketIo(`http://${host}`)
     return new Promise(resolve => {
         socket.on('connect', ()=>{
+            console.log("HERE HERE ")
             resolve(socket)
         })
     })
@@ -34,7 +35,6 @@ const subscribe = (socket)=>{
 }
 
 const read = function* (socket){
-
     const channel = yield call(subscribe,socket)
     while(true){
         let action = yield take(channel)
@@ -61,9 +61,13 @@ const flow = function* (){
     try {
         // This is inside of a while loop be cause its possible to close and open the connection
         while(true){
+            console.log("AND WE PAUSE")
             const {host} = yield take(SETUP_SOCKET_CONNECTION)
+            console.log("NOW HERE ")
             const socket = yield call(connect,host)
+            console.log("HEREEE")
             const {tasks, projects} = yield select(getStateProjectsAndTasks)
+            console.log("REACH")
             socket.emit(CONNECTION_ESTABLISHED,{ data: {tasks,projects}})
             yield put({type: SOCKET_CONNECTED, host})
 

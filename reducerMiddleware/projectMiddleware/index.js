@@ -7,11 +7,6 @@ export const projectMiddleware = store => next => action => {
     // Store has been update here
 
     switch(action.type){
-        case CREATE_TASK:
-            if(action.projectId){
-                const {tasks} = store.getState()
-                next({type: ADD_TASKS, projectId: action.projectId, tasks: [tasks[action.task.id]] })
-            }
         default:
             break;
     }

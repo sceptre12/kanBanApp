@@ -73,7 +73,7 @@ class ProjectView extends Component{
     }
 }
 
-const mapStateToProp = (state,otherProps) => ({
+const mapStateToProps = (state,otherProps) => ({
     project: state.projects[otherProps.navigation.getParam('projectId')]
 })
 
@@ -85,4 +85,4 @@ const mapDispatchToProps = (dispatch,otherProps) => {
     }
 }
 
-export default connect(mapStateToProp,mapDispatchToProps)(ProjectView)
+export default connect(mapStateToProps,mapDispatchToProps)(ProjectView)

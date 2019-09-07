@@ -6,9 +6,9 @@ import ProjectView from "../screens/projects/components/ProjectView";
 import CreateProject from "../screens/projects/components/CreateProject";
 import Tasks from '../screens/tasks'
 import CreateTasks from "../screens/tasks/components/CreateTasks";
+import TaskView from '../screens/tasks/components/TaskView'
 import TabBarIcon from '../components/TabBarIcon';
-import SettingsScreen from '../screens/SettingsScreen';
-import {CREATE_PROJECT_VIEW, PROJECTS_VIEW, PROJECT_VIEW,CREATE_TASK_VIEW} from "../constants/navigation";
+import {CREATE_PROJECT_VIEW, PROJECTS_VIEW, PROJECT_VIEW,CREATE_TASK_VIEW,TASKS_VIEW,TASK_VIEW} from "../constants/navigation";
 
 
 const Project = createStackNavigator(
@@ -44,7 +44,9 @@ Project.navigationOptions = ({navigation}) =>{
 
 const Task = createStackNavigator(
     {
-        Tasks,
+        [TASKS_VIEW]: Tasks,
+        [TASK_VIEW]: TaskView,
+        [CREATE_TASK_VIEW] : CreateTasks
     }, {
         defaultNavigationOptions: ({navigation}) => {
             const {routeName} = navigation.state
@@ -63,24 +65,10 @@ Task.navigationOptions = {
 };
 
 
-const SettingsStack = createStackNavigator(
-    {
-        Settings: SettingsScreen,
-    }
-);
-
-SettingsStack.navigationOptions = {
-    tabBarLabel: 'Settings',
-    tabBarIcon: ({focused}) => (
-        <TabBarIcon focused={focused} name={Platform.OS === 'ios' ? 'ios-options' : 'md-options'}/>
-    ),
-};
-
 
 const tabNavigator = createBottomTabNavigator({
     Project,
-    Task,
-    SettingsStack,
+    Task
 },);
 
 

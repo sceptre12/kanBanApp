@@ -1,7 +1,7 @@
 export const MAIN_VIEW = "MAIN_VIEW"
-export const HOME = "HOME"
 export const PROJECTS_VIEW = "PROJECTS_VIEW"
 export const PROJECT_VIEW = "PROJECT_VIEW"
 export const TASK_VIEW = "TASK_VIEW"
+export const TASKS_VIEW = "TASKS_VIEW"
 export const CREATE_PROJECT_VIEW = "CREATE_PROJECT_VIEW"
 export const CREATE_TASK_VIEW  = "CREATE_TASK_VIEW"

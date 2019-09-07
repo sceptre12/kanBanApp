@@ -1,7 +1,7 @@
 import StateTree from "../store/stateTree";
 import {CREATE_TASK} from "../action/taskAction";
 
-export default (state=StateTree.projects,action) =>{
+export default (state=StateTree.tasks,action) =>{
     switch (action.type) {
         case CREATE_TASK:
             return {

@@ -32,16 +32,34 @@ class TaskModal extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            selectedTasks: []
+            selectedTasks: {}
         }
     }
 
     updateSelectedTasks = (id, selectedTasks) => {
-        this.setState({selectedTasks})
+        const {tasks} = this.props
+        this.setState( {
+            selectedTasks: selectedTasks.reduce( (accum,current) =>
+                Object.assign(accum,{
+                    [tasks[current].id]: tasks[current]
+                }), {})
+        })
+    }
+
+    _filterOutSelectedTasks = (tasks) => {
+        const {projectTasks} = this.props
+        let tempTasks = Object.assign( )
+        return
+    }
+
+    addTasksToProject = () =>{
+        const {addTasks,closeModal} = this.props
+        addTasks(this.state.selectedTasks)
+        closeModal()
     }
 
     render() {
-        const {isVisible, closeModal, tasks, addTasks} = this.props
+        const {isVisible, closeModal, tasks} = this.props
         const {selectedTasks} = this.state
         const {height, width} = Dimensions.get('window')
         return (
@@ -65,7 +83,7 @@ class TaskModal extends Component {
                     <ButtonBar
                         leftBtnText={"Add Tasks"}
                         rightBtnText={"Close Modal"}
-                        leftBtnPress={addTasks.bind(selectedTasks)}
+                        leftBtnPress={this.addTasksToProject}
                         rightBtnPress={closeModal}
                         isLeftBtnDisabled={selectedTasks.length === 0}
                     />
@@ -75,8 +93,8 @@ class TaskModal extends Component {
     }
 }
 
-const mapStateToDispatch = state => ({
+const mapStateToProps = state => ({
     tasks: state.tasks
 })
 
-export default connect(mapStateToDispatch)(TaskModal)
+export default connect(mapStateToProps)(TaskModal)

@@ -1,6 +1,6 @@
 import React from 'react'
-import {StyleSheet, View} from "react-native";
-import {Button} from 'react-native-paper'
+import {StyleSheet, View } from "react-native";
+import { Button } from 'react-native-elements';
 
 const styles = StyleSheet.create({
     buttonBar: {
@@ -23,9 +23,9 @@ export const ButtonBar = ({leftBtnText, rightBtnText, leftBtnPress, rightBtnPres
                 <Button
                     disabled={isLeftBtnDisabled}
                     mode="contained"
-                    onPress={leftBtnPress}>
-                    {leftBtnText}
-                </Button>
+                    onPress={leftBtnPress}
+                    title={leftBtnText}
+                />
             </View>) : null
         }
         {
@@ -34,9 +34,9 @@ export const ButtonBar = ({leftBtnText, rightBtnText, leftBtnPress, rightBtnPres
                     <Button
                         disabled={isMiddleBtnDisabled}
                         mode="contained"
-                        onPress={middleBtnPressed}>
-                        {middleBtnText}
-                    </Button>
+                        onPress={middleBtnPressed}
+                        title={middleBtnText}
+                    />
                 </View>
             ) : null
         }
@@ -46,12 +46,11 @@ export const ButtonBar = ({leftBtnText, rightBtnText, leftBtnPress, rightBtnPres
                     <Button
                         disabled={isRightBtnDisabled}
                         mode="contained"
-                        onPress={rightBtnPress}>
-                       {rightBtnText}
-                    </Button>
+                        onPress={rightBtnPress}
+                        title={rightBtnText}
+                    />
                 </View>
             ) : null
         }
-
     </View>
 )

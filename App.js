@@ -1,7 +1,6 @@
 import React, {Component, Fragment} from 'react';
 import {AppLoading} from 'expo';
 import {connect, Provider as StoreProvider} from 'react-redux'
-import {Provider as PaperProvider} from 'react-native-paper';
 import {Asset} from 'expo-asset';
 import * as Font from 'expo-font';
 import {Platform, StatusBar, StyleSheet, View} from 'react-native';
@@ -70,9 +69,7 @@ const Main = connect(mapStateToProps, mapDispatchToProps)(MainApp)
 
 export default App = () => (
     <StoreProvider store={rootStore}>
-        <PaperProvider>
             <Main/>
-        </PaperProvider>
     </StoreProvider>
 )
 

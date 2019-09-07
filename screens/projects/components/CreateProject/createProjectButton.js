@@ -1,6 +1,7 @@
 import React from 'react'
 import {connect} from 'react-redux'
-import {Button, StyleSheet} from "react-native";
+import {StyleSheet} from "react-native";
+import {Button} from 'react-native-elements'
 import {LAUNCH_CREATE_PROJECT} from "../../../../action/navigation";
 
 const CreateProjectButton = ({launchCreateProject}) => (

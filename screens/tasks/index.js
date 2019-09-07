@@ -5,7 +5,10 @@ import {connect} from 'react-redux'
 
 import ListComponent from "../../components/ListComponent";
 import {ListItem} from '../../components/ListItem'
+
+import {LAUNCH_TASK_VIEW} from '../../action/navigation'
 import {CREATE_TASK_VIEW} from "../../constants/navigation";
+import CreateTaskButton from "./components/createTaskButton";
 
 
 const styles = StyleSheet.create({
@@ -14,24 +17,23 @@ const styles = StyleSheet.create({
 
 
 class Tasks extends Component {
-    static navigationOptions = {}
+    static navigationOptions = {
+        headerRight: <CreateTaskButton/>
+    }
 
     constructor(props) {
         super(props)
     }
 
     componentDidMount() {
-        /**
-         * TODO bring down db tasks
-         */
     }
 
     render() {
-        const {tasks} = this.props
+        const {tasks, openTaskView} = this.props
 
         return (
             <View style={styles.container}>
-                <ListComponent data={tasks} itemComponent={ListItem} isMultiSelection={false}/>
+                <ListComponent data={tasks} itemComponent={ListItem} isMultiSelection={false} onPress={openTaskView}/>
             </View>
         )
     }
@@ -42,7 +44,8 @@ const mapStateToProps = state => ({
 })
 
 const mapDispatchToProps = dispatch => ({
-    createTask: () => dispatch({type: CREATE_TASK_VIEW})
+    createTask: () => dispatch({type: CREATE_TASK_VIEW}),
+    openTaskView: () => dispatch({type: LAUNCH_TASK_VIEW})
 })
 
 export default connect(mapStateToProps, mapDispatchToProps)(Tasks)

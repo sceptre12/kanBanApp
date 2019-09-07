@@ -9,6 +9,7 @@ import TaskModal from './taskModal'
 import {ButtonBar} from "../../../../components/ButtonBar";
 
 import {CREATE_PROJECT} from '../../../../action/projectActions'
+import {LAUNCH_CREATE_TASK} from '../../../../action/navigation'
 
 
 const styles = StyleSheet.create({
@@ -59,26 +60,29 @@ class CreateProject extends Component {
     constructor(props) {
         super(props);
         this.state = {
+            id: uuid.v1(),
             name: '',
-            description: '',
             tasks: {},
+            description: '',
             inProgress: [],
             isCompleted: false,
             isModalActive: false
         }
     }
 
+
     updateName = name => this.setState({name})
     updateDescription = description => this.setState({description})
     toggleModal = () => this.setState(state => ({isModalActive: !state.isModalActive}))
-    addTasks = tasks => this.setState({tasks})
+    addTasks = tasks => this.setState(state => ({tasks: Object.assign(state.tasks, tasks)}))
     createProject = () => {
-        const {name,description,tasks,inProgress,isCompleted} = this.state
-        this.props.createProject({name,description,tasks,inProgress,isCompleted,id: uuid.v1()})
+        const {name,description,tasks,inProgress,isCompleted, id} = this.state
+        this.props.createProject({name,description,tasks,inProgress,isCompleted,id})
     }
 
     render() {
-        const {name, description, tasks,isModalActive} = this.state
+        const {name, description,isModalActive,id, tasks } = this.state
+        const {createTasks} = this.props
         return (
             <Fragment>
                 <View style={styles.screenContainer}>
@@ -107,14 +111,20 @@ class CreateProject extends Component {
                     </View>
                     <ButtonBar
                         leftBtnText={"Add Tasks"}
+                        leftBtnPress={this.toggleModal}
                         middleBtnText={"Create project"}
                         middleBtnPressed={this.createProject}
                         rightBtnText={"Create Tasks"}
-                        leftBtnPress={this.toggleModal}
+                        rightBtnPress={createTasks.bind(null,this.addTasks, id)}
                     />
                 </View>
                 {
-                    isModalActive? <TaskModal isVisible={isModalActive} closeModal={this.toggleModal} addTasks={this.addTasks}/>: null
+                    isModalActive? <TaskModal
+                        isVisible={isModalActive}
+                        closeModal={this.toggleModal}
+                        addTasks={this.addTasks}
+                        projectTasks={tasks}
+                    /> : null
                 }
 
             </Fragment>
@@ -122,10 +132,13 @@ class CreateProject extends Component {
     }
 }
 
-const mapStateToProps = state => ({})
+const mapStateToProps = state => ({
+    tasks: state.tasks
+})
 
 const mapDispatchToProps = dispatch => ({
-    createProject: project => dispatch({type: CREATE_PROJECT, project})
+    createProject: project => dispatch({type: CREATE_PROJECT, project}),
+    createTasks : (addTaskFunc, projectId) => dispatch({type: LAUNCH_CREATE_TASK,addTaskFunc, projectId})
 })
 
 export default connect(mapStateToProps, mapDispatchToProps)(CreateProject)
